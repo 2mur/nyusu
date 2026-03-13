@@ -1,0 +1,9 @@
+google-cloud-storage==2.14.0
+google-cloud-firestore==2.14.0
+google-genai==0.3.0
+pinecone-client==3.0.2
+pydantic==2.6.1
+pillow==10.2.0
+requests==2.31.0
+numpy==1.26.4
+python-dotenv==1.0.1

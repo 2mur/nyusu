@@ -1,0 +1,32 @@
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - location: "us-central1"
+
+    - run_ingest:
+        call: googleapis.run.v1.namespaces.jobs.run
+        args:
+            name: ${"namespaces/" + project_id + "/jobs/news-ingestion-job"}
+            location: ${location}
+        result: ingest_result
+
+    - run_inference:
+        call: googleapis.run.v1.namespaces.jobs.run
+        args:
+            name: ${"namespaces/" + project_id + "/jobs/newsinference-job"}
+            location: ${location}
+        result: inference_result
+
+    - run_imagegen:
+        call: googleapis.run.v1.namespaces.jobs.run
+        args:
+            name: ${"namespaces/" + project_id + "/jobs/news-image-gen-job"}
+            location: ${location}
+        result: imagegen_result
+
+    - finish:
+        return: 
+            status: "Pipeline executed successfully."
+            imagegen_details: ${imagegen_result}
